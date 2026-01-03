@@ -48,3 +48,93 @@ export const findAll = (req, res) => {
       });
     });
 };
+
+//find single tut by ID
+export const findOne = (req, res) => {
+  const id = req.body.id;
+
+  Tutorial.findByPk(id)
+    .then((data) => {
+      if (data) {
+        res.send(data);
+      } else {
+        res.status(404).send({
+          message: `Cannot find tutorial with id=${id}`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: `Error retrieving tutorial with id=${id}`,
+      });
+    });
+};
+
+//update tutorial by id
+export const update = (req, res) => {
+  const id = req.body.id;
+
+  Tutorial.update(req.body, {
+    where: { id: id },
+  })
+    .then((num) => {
+      if (num === 1) {
+        res.send({
+          message: "Tutorial updated successfully!",
+        });
+      } else {
+        res.send({
+          message: `Cannot update Tutorial with id=${id}. Maybe tutorial not found or res.body = empty.`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: `Error updating Tutorial with id=${id}`,
+      });
+    });
+};
+
+//delete tut by id
+export const deleteOne = (req, res) => {
+  const id = req.body.id;
+
+  Tutorial.destroy({
+    where: { id: id },
+  })
+    .then((num) => {
+      if (num === 1) {
+        res.send({
+          message: "Tutorial deleted successfully!",
+        });
+      } else {
+        res.send({
+          message: `Cannot delete tutorial with id=${id}. Maybe it cannot be found.`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: `Error occurred deleting tutorial with id=${id}`,
+      });
+    });
+};
+
+//delete all tutorials
+export const deleteAll = (req, res) => {
+  Tutorial.destroy({
+    where: {},
+    truncate: false,
+  })
+    .then((nums) => {
+      res.send({
+        message: `${nums} tutorials deleted successfully!`,
+      });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occured when deleting all tutorials.",
+      });
+    });
+};
