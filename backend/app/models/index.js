@@ -1,4 +1,4 @@
-import dbConfig from "../config/db.config";
+import dbConfig from "../config/db.config.js";
 import Sequelize from "sequelize";
 import Tutorial from "./tutorial.model.js";
 
