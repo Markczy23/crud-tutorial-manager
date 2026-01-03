@@ -138,3 +138,17 @@ export const deleteAll = (req, res) => {
       });
     });
 };
+
+//find all published tuts
+export const findAllPublished = (req, res) => {
+  Tutorial.findAll({ where: { published: true } })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occured finding all published tutorials.",
+      });
+    });
+};
