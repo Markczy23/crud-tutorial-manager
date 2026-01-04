@@ -35,7 +35,7 @@ export const create = (req, res) => {
 
 //Get all tutorials or get all by title
 export const findAll = (req, res) => {
-  const title = req.body.title;
+  const title = req.query.title;
   const condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
 
   Tutorial.findAll({ where: condition })
@@ -51,7 +51,7 @@ export const findAll = (req, res) => {
 
 //find single tut by ID
 export const findOne = (req, res) => {
-  const id = req.body.id;
+  const id = req.params.id;
 
   Tutorial.findByPk(id)
     .then((data) => {
@@ -72,13 +72,13 @@ export const findOne = (req, res) => {
 
 //update tutorial by id
 export const update = (req, res) => {
-  const id = req.body.id;
+  const id = req.params.id;
 
   Tutorial.update(req.body, {
     where: { id: id },
   })
     .then((num) => {
-      if (num === 1) {
+      if (num[0] === 1) {
         res.send({
           message: "Tutorial updated successfully!",
         });
@@ -97,7 +97,7 @@ export const update = (req, res) => {
 
 //delete tut by id
 export const deleteOne = (req, res) => {
-  const id = req.body.id;
+  const id = req.params.id;
 
   Tutorial.destroy({
     where: { id: id },
